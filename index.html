@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pendientes | Pizarrón de tareas</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!--
+    ============================================================
+    NOTA DE EQUIPO (Programador 2 - estructura y distribución)
+    ============================================================
+    Esta es la estructura base. Los "ganchos" (ids/clases) que
+    necesita cada quien para su lógica en JS son:
+
+    - Programador 3 (agregar tareas):
+        #task-form, #task-input, #task-list
+        -> al enviar el form, crear un <li class="task-item"> dentro
+           de #task-list siguiendo la plantilla comentada más abajo.
+
+    - Programador 4 (fecha de vencimiento):
+        #task-due-date (input dentro del form)
+        -> al crear la tarea, leer este valor y renderizarlo en
+           el <span class="task-due"> de cada task-item.
+
+    - Programador 1 (eliminar / actualizar tareas):
+        .task-edit-btn, .task-delete-btn (dentro de cada task-item)
+        -> usar delegación de eventos sobre #task-list.
+
+    - Programador 4 (contador de completadas):
+        #completed-count, #total-count (dentro de #task-counter)
+        -> actualizar cada vez que se marca/desmarca .task-checkbox.
+
+    - Programador 3 (nombres del equipo):
+        #team-credits (footer, ya tiene la estructura, solo hay
+        que reemplazar los <li> con los nombres reales).
+    ============================================================
+  -->
+
+  <main class="board-wrapper">
+    <section class="board" aria-labelledby="board-title">
+
+      <header class="board__header">
+        <p class="board__eyebrow">lista compartida</p>
+        <h1 id="board-title" class="board__title">pendientes</h1>
+      </header>
+
+      <!-- Formulario para agregar tareas: Programador 3 escucha el submit -->
+      <form id="task-form" class="task-form" autocomplete="off">
+        <div class="task-form__row">
+          <label class="visually-hidden" for="task-input">Nueva tarea</label>
+          <input
+            type="text"
+            id="task-input"
+            name="task-input"
+            class="task-form__input"
+            placeholder="Escribe una tarea..."
+            required
+            maxlength="120"
+          >
+
+          <label class="visually-hidden" for="task-due-date">Fecha de vencimiento</label>
+          <input
+            type="date"
+            id="task-due-date"
+            name="task-due-date"
+            class="task-form__date"
+            aria-label="Fecha de vencimiento"
+          >
+
+          <button type="submit" id="add-task-btn" class="task-form__submit">
+            + Agregar
+          </button>
+        </div>
+      </form>
+
+      <!-- Lista de tareas: Programador 3 inserta <li> aquí -->
+      <ul id="task-list" class="task-list" aria-live="polite">
+
+        <!--
+          PLANTILLA de referencia para cada tarea (Programador 3 la genera
+          dinámicamente con JS, esto es solo para que vean la forma esperada):
+
+          <li class="task-item" data-id="ID_UNICO">
+            <label class="task-item__check">
+              <input type="checkbox" class="task-checkbox">
+              <span class="task-checkbox__mark" aria-hidden="true"></span>
+            </label>
+
+            <div class="task-item__body">
+              <span class="task-text">Texto de la tarea</span>
+              <span class="task-due">Vence: 20/07</span>
+            </div>
+
+            <div class="task-item__actions">
+              <button class="task-edit-btn" aria-label="Editar tarea">✎</button>
+              <button class="task-delete-btn" aria-label="Eliminar tarea">🗑</button>
+            </div>
+          </li>
+        -->
+
+        <!-- Estado vacío por defecto, quitar/ocultar cuando haya tareas -->
+        <li id="empty-state" class="empty-state">
+          Todavía no hay tareas. Escribe la primera arriba ↑
+        </li>
+      </ul>
+
+      <!-- Contador de tareas: Programador 4 lo actualiza -->
+      <footer id="task-counter" class="task-counter">
+        <span id="completed-count">0</span>/<span id="total-count">0</span> tareas completadas
+      </footer>
+
+    </section>
+
+    <!-- Repisa de madera con el gis, puramente visual -->
+    <div class="chalk-tray" aria-hidden="true">
+      <div class="chalk-tray__chalk"></div>
+    </div>
+
+    <!-- Créditos del equipo: Programador 3 coloca los nombres reales -->
+    <footer id="team-credits" class="team-credits">
+      <ul>
+        <li>Programador 1</li>
+        <li>Programador 2</li>
+        <li>Programador 3</li>
+        <li>Programador 4</li>
+      </ul>
+    </footer>
+  </main>
+
+  <script src="index.js"></script>
+</body>
+</html>

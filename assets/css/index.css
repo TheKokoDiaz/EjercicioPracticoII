@@ -1,0 +1,365 @@
+/* ============================================================
+   TOKENS DE DISEÑO — Programador 2
+   Concepto: pizarrón de tareas sobre un escritorio de madera.
+   ============================================================ */
+:root {
+  /* Color */
+  --wood-bg: #3B2A22;
+  --wood-bg-light: #4A3628;
+  --board-bg: #1B2A2F;
+  --board-bg-soft: #22343A;
+  --chalk-white: #EDEDE3;
+  --chalk-white-dim: #B9C4C2;
+  --chalk-amber: #E8B34C;
+  --chalk-coral: #D9727A;
+  --chalk-green: #7FA65A;
+  --board-frame: #12201F;
+
+  /* Tipografía */
+  --font-display: 'Kalam', cursive;
+  --font-body: 'Space Mono', monospace;
+
+  /* Layout */
+  --radius-board: 18px;
+  --radius-item: 10px;
+  --shadow-board: 0 25px 50px -12px rgba(0, 0, 0, 0.55);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at top, rgba(255, 255, 255, 0.04), transparent 60%),
+    repeating-linear-gradient(
+      90deg,
+      var(--wood-bg) 0px,
+      var(--wood-bg) 18px,
+      var(--wood-bg-light) 18px,
+      var(--wood-bg-light) 20px
+    );
+  font-family: var(--font-body);
+  color: var(--chalk-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   TABLERO
+   ============================================================ */
+.board-wrapper {
+  width: 100%;
+  max-width: 560px;
+}
+
+.board {
+  background: var(--board-bg);
+  border: 10px solid var(--board-frame);
+  border-radius: var(--radius-board);
+  box-shadow: var(--shadow-board);
+  padding: 32px 28px 24px;
+  position: relative;
+}
+
+/* textura sutil de tiza/polvo sobre el pizarrón */
+.board::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: calc(var(--radius-board) - 10px);
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 2px 4px;
+  pointer-events: none;
+}
+
+.board__header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.board__eyebrow {
+  margin: 0 0 2px;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--chalk-white-dim);
+}
+
+.board__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 3rem;
+  color: var(--chalk-white);
+  text-shadow: 0 0 12px rgba(237, 237, 227, 0.25);
+}
+
+/* ============================================================
+   FORMULARIO
+   ============================================================ */
+.task-form__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.task-form__input,
+.task-form__date,
+.task-form__submit {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  border-radius: 8px;
+  border: 1px dashed rgba(237, 237, 227, 0.35);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--chalk-white);
+  padding: 10px 12px;
+}
+
+.task-form__input {
+  flex: 1 1 160px;
+  min-width: 0;
+}
+
+.task-form__input::placeholder {
+  color: var(--chalk-white-dim);
+}
+
+.task-form__date {
+  flex: 0 1 150px;
+  color-scheme: dark;
+}
+
+.task-form__input:focus-visible,
+.task-form__date:focus-visible,
+.task-form__submit:focus-visible,
+.task-edit-btn:focus-visible,
+.task-delete-btn:focus-visible,
+.task-checkbox:focus-visible ~ .task-checkbox__mark {
+  outline: 2px solid var(--chalk-amber);
+  outline-offset: 2px;
+}
+
+.task-form__submit {
+  flex: 0 0 auto;
+  background: var(--chalk-amber);
+  color: #2A1D0A;
+  border: 1px solid var(--chalk-amber);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.task-form__submit:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   LISTA DE TAREAS
+   ============================================================ */
+.task-list {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--chalk-white-dim);
+  font-style: italic;
+  padding: 18px 8px;
+  border: 1px dashed rgba(237, 237, 227, 0.2);
+  border-radius: var(--radius-item);
+}
+
+/* Estilo esperado para cada .task-item que agregue Programador 3 */
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--board-bg-soft);
+  border-radius: var(--radius-item);
+  padding: 10px 12px;
+}
+
+.task-item__check {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.task-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.task-checkbox__mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  border: 2px solid var(--chalk-white-dim);
+  display: inline-block;
+}
+
+.task-checkbox:checked ~ .task-checkbox__mark {
+  border-color: var(--chalk-green);
+  background:
+    linear-gradient(135deg, transparent 40%, var(--chalk-green) 40%, var(--chalk-green) 55%, transparent 55%),
+    linear-gradient(45deg, transparent 40%, var(--chalk-green) 40%, var(--chalk-green) 55%, transparent 55%);
+}
+
+.task-item__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.task-text {
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.task-checkbox:checked ~ .task-item__body .task-text,
+.task-item--done .task-text {
+  text-decoration: line-through;
+  color: var(--chalk-white-dim);
+}
+
+.task-due {
+  font-size: 0.7rem;
+  color: var(--chalk-coral);
+}
+
+.task-item__actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.task-edit-btn,
+.task-delete-btn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--chalk-white-dim);
+  font-size: 0.95rem;
+  padding: 4px 7px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.task-edit-btn:hover {
+  color: var(--chalk-amber);
+  border-color: var(--chalk-amber);
+}
+
+.task-delete-btn:hover {
+  color: var(--chalk-coral);
+  border-color: var(--chalk-coral);
+}
+
+/* ============================================================
+   CONTADOR
+   ============================================================ */
+.task-counter {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--chalk-white-dim);
+  letter-spacing: 0.04em;
+}
+
+/* ============================================================
+   REPISA / GIS (decorativo)
+   ============================================================ */
+.chalk-tray {
+  height: 14px;
+  margin: 0 18px;
+  background: linear-gradient(var(--wood-bg-light), var(--wood-bg));
+  border-radius: 0 0 6px 6px;
+  position: relative;
+}
+
+.chalk-tray__chalk {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-40px);
+  width: 46px;
+  height: 10px;
+  background: var(--chalk-white);
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================================
+   CRÉDITOS
+   ============================================================ */
+.team-credits {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.team-credits ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 14px;
+}
+
+.team-credits li {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--chalk-white-dim);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 420px) {
+  .board__title {
+    font-size: 2.3rem;
+  }
+
+  .task-form__date {
+    flex-basis: 130px;
+  }
+}
+
+/* ============================================================
+   ACCESIBILIDAD: respetar preferencia de movimiento reducido
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
