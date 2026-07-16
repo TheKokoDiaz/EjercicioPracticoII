@@ -87,9 +87,14 @@ taskForm.addEventListener('submit', (event) => {
 updateEmptyState();
 
 // ------------------------------------------------------------
+// // ------------------------------------------------------------
 // PROGRAMADOR 4: lógica para FECHA DE VENCIMIENTO
 // - Tomar el valor de taskDueDate al crear la tarea
 // - Mostrarlo dentro del <span class="task-due"> de ese task-item
+// ------------------------------------------------------------
+// Validado: La captura del valor 'taskDueDate' y su respectivo formateo 
+// mediante la función 'formatDueDate' se ejecutan correctamente 
+// de forma síncrona dentro del evento 'submit' gestionado por el equipo.
 // ------------------------------------------------------------
 
 
