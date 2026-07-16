@@ -77,6 +77,7 @@ taskForm.addEventListener('submit', (event) => {
   taskList.appendChild(newTask);
 
   updateEmptyState();
+  updateTaskCounter(); // Se llama aquí para actualizar los contadores al agregar
 
   // Limpiar el formulario para la siguiente tarea
   taskForm.reset();
@@ -87,7 +88,6 @@ taskForm.addEventListener('submit', (event) => {
 updateEmptyState();
 
 // ------------------------------------------------------------
-// // ------------------------------------------------------------
 // PROGRAMADOR 4: lógica para FECHA DE VENCIMIENTO
 // - Tomar el valor de taskDueDate al crear la tarea
 // - Mostrarlo dentro del <span class="task-due"> de ese task-item
@@ -95,7 +95,6 @@ updateEmptyState();
 // Validado: La captura del valor 'taskDueDate' y su respectivo formateo 
 // mediante la función 'formatDueDate' se ejecutan correctamente 
 // de forma síncrona dentro del evento 'submit' gestionado por el equipo.
-// ------------------------------------------------------------
 
 
 // ------------------------------------------------------------
@@ -111,3 +110,25 @@ updateEmptyState();
 // - Escuchar 'change' en .task-checkbox (delegación sobre taskList)
 // - Actualizar completedCountEl y totalCountEl
 // ------------------------------------------------------------
+function updateTaskCounter() {
+  const allTasks = taskList.querySelectorAll('.task-item');
+  const totalCount = allTasks.length;
+  
+  let completedCount = 0;
+  allTasks.forEach(task => {
+    const checkbox = task.querySelector('.task-checkbox');
+    if (checkbox && checkbox.checked) {
+      completedCount++;
+    }
+  });
+
+  totalCountEl.textContent = totalCount;
+  completedCountEl.textContent = completedCount;
+}
+
+// Delegación de eventos: Escucha cambios en los checkboxes de la lista
+taskList.addEventListener('change', (event) => {
+  if (event.target.classList.contains('task-checkbox')) {
+    updateTaskCounter();
+  }
+});
