@@ -103,7 +103,38 @@ updateEmptyState();
 // - Click en .task-delete-btn -> eliminar el <li> más cercano
 // - Click en .task-edit-btn -> permitir editar el .task-text
 // ------------------------------------------------------------
+taskList.addEventListener("click", (event) => {
 
+    // ==========================
+    // ELIMINAR TAREA
+    // ==========================
+    if (event.target.classList.contains("task-delete-btn")) {
+
+        const task = event.target.closest(".task-item");
+
+        task.remove();
+
+        updateEmptyState();
+        updateTaskCounter();
+    }
+
+    // ==========================
+    // EDITAR TAREA
+    // ==========================
+    if (event.target.classList.contains("task-edit-btn")) {
+
+        const task = event.target.closest(".task-item");
+
+        const textElement = task.querySelector(".task-text");
+
+        const nuevoTexto = prompt("Editar tarea:", textElement.textContent);
+
+        if (nuevoTexto !== null && nuevoTexto.trim() !== "") {
+            textElement.textContent = nuevoTexto.trim();
+        }
+    }
+
+});
 
 // ------------------------------------------------------------
 // PROGRAMADOR 4: contador de tareas completadas
